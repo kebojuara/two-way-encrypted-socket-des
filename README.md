@@ -1,17 +1,18 @@
-# Full-Duplex Two-Way Encrypted Socket Transmission using Manual Vigenere Cipher
+# Full-Duplex Two-Way Encrypted Socket Transmission using Manual DES (Data Encryption Standard)
 
 ## About
 
 This repository contains my assignment for the Information Security course at Institut Teknologi Sepuluh Nopember, Surabaya.
 
-The project demonstrates a real-time, two-way (full-duplex) encrypted transmission over TCP sockets. Communication is secured using a manually implemented Vigenere cipher without external cryptographic libraries. A pre-shared key (KEAMANANINFORMASI) is utilized by both endpoints and is never transmitted over the network wire.
+The project demonstrates a real-time, two-way (full-duplex) encrypted transmission over TCP sockets. Communication is secured using a manually implemented Data Encryption Standard (DES) algorithm without external cryptographic libraries. A pre-shared 64-bit key (KEAMANAN) is utilized by both endpoints and is never transmitted over the network wire.
 
 ## Features
 
-1. Manual Cryptographic Implementation: Custom Vigenere cipher handling printable ASCII characters without relying on external cryptography libraries.
+1. Manual Cryptographic Implementation: Custom DES algorithm from scratch, incorporating Initial Permutation (IP), 16-round Feistel Network, S-Box substitutions (S1 to S8), Expansion Permutation (E), Permutation Box (P), Key Schedule (PC-1, PC-2, round shifts), Inverse Permutation (FP), and PKCS#7 padding.
 2. Full-Duplex Communication: Independent sender and receiver threads executing concurrently without blocking.
 3. Cross-Platform and Multi-Device Support: Validated across physical devices (Linux/Windows workstation to Android/iOS mobile endpoints) over a local network.
-4. Zero-Key Transmission: Cryptographic keys remain isolated strictly in local memory.
+4. Hexadecimal Payload Transmission: Binary ciphertext blocks are encoded into standard hexadecimal strings for reliable stream transport over TCP sockets.
+5. Zero-Key Transmission: Cryptographic keys remain isolated strictly in local memory.
 
 ## Prerequisites and Installation
 
@@ -73,7 +74,7 @@ Ensure HOST is bound to 0.0.0.0 to listen on all local network interfaces:
 ```python
 HOST = '0.0.0.0'
 PORT = 5000
-KEY = "KEAMANANINFORMASI"
+KEY = "KEAMANAN"
 ```
 
 In client.py:
@@ -81,7 +82,7 @@ Change HOST from 0.0.0.0 to your actual server IPv4 address:
 ```python
 HOST = '10.199.101.130'
 PORT = 5000
-KEY = "KEAMANANINFORMASI"
+KEY = "KEAMANAN"
 ```
 
 Both devices must be connected to the same Wi-Fi network or smartphone hotspot with client isolation disabled.
@@ -180,6 +181,6 @@ Server to Client payload is color-coded in blue.
 
 1. Transmit a known test string from the client (for example: SECRET MESSAGE).
 2. Observe the captured TCP payload in either tcpdump or Wireshark.
-3. Only the scrambled ciphertext bytes traverse the network.
+3. Only the scrambled DES ciphertext (in hexadecimal string format) traverses the network.
 4. The raw plaintext string is completely absent from the packet payload.
-5. The pre-shared key string KEAMANANINFORMASI never traverses the wire, verifying that key storage remains strictly local.
+5. The pre-shared key string KEAMANAN never traverses the wire, verifying that key storage remains strictly local.
